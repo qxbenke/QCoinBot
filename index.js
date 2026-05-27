@@ -1,3 +1,4 @@
+const axios = require('axios')
 require('dotenv').config()
 
 const { Telegraf, Markup } = require('telegraf')
