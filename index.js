@@ -7,6 +7,31 @@ const bot = new Telegraf(process.env.BOT_TOKEN)
 const WEBSITE = 'https://q-coin-green.vercel.app/'
 
 bot.start((ctx) => {
+  ```javascript
+bot.command('qx', (ctx) => {
+  ctx.reply(`
+🚀 Q Coin (QX)
+
+AI + Web3 + 极速支付生态
+
+💎 Token: QX
+🌐 Network: TON Blockchain
+📦 Supply: 560,000 QX
+🔢 Decimals: 9
+
+📜 Contract:
+EQC-0juuPuAL3wt7jeXXnRQ9Fk_1Lge75bc12TcgImRTOkAE
+
+🌍 Website:
+https://q-coin-green.vercel.app/
+
+💰 Buy QX:
+https://app.ston.fi/
+
+⚡ Status:
+LIVE
+`)
+})
   ctx.reply(
     `🚀 Welcome to Q Coin (QX)
 
