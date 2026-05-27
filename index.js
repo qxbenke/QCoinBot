@@ -4,7 +4,7 @@ const { Telegraf, Markup } = require('telegraf')
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
-const WEBSITE = 'https://app.ston.fi/swap?chartVisible=false&ft=TON&tt=EQC-0juuPuAL3wt7jeXXnRQ9Fk_1Lge75bc12TcgImRTOkAE/'
+const WEBSITE = 'https://q-coin-green.vercel.app/'
 
 bot.start((ctx) => {
   ctx.reply(
