@@ -1,56 +1,77 @@
-const { Telegraf, Markup } = require('telegraf')
-require('dotenv').config()
+const { Telegraf } = require('telegraf')
+const dotenv = require('dotenv')
+const { getQXBalance } = require('./ton')
+
+dotenv.config()
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
-// 👤 /start
-bot.start((ctx) => {
-  ctx.reply(
-    `🚀 欢迎来到 QX (TON Meme Coin)
+// 👛 临时钱包存储（生产用数据库）
+const walletMap = {}
 
-请选择功能：`,
-    Markup.inlineKeyboard([
-      [
-        Markup.button.callback('🎁 空投', 'airdrop'),
-        Markup.button.callback('👛 钱包', 'wallet')
-      ],
-      [
-        Markup.button.callback('📊 数据', 'stats')
-      ]
-    ])
-  )
+/* =========================
+   🔗 绑定钱包
+========================= */
+bot.command('bind', (ctx) => {
+  const wallet = ctx.message.text.split(' ')[1]
+
+  if (!wallet) {
+    return ctx.reply('❌ 用法: /bind EQCxxxx')
+  }
+
+  walletMap[ctx.from.id] = wallet
+
+  ctx.reply(`👛 钱包绑定成功：
+
+${wallet}`)
 })
 
-// 🎁 空投
-bot.action('airdrop', (ctx) => {
-  ctx.answerCbQuery()
-  ctx.reply('🎁 你获得 +10 QX（模拟）')
+/* =========================
+   💰 查询 QX 余额（链上）
+========================= */
+bot.command('balance', async (ctx) => {
+  const wallet = walletMap[ctx.from.id]
+
+  if (!wallet) {
+    return ctx.reply('❌ 请先绑定钱包: /bind')
+  }
+
+  const balance = await getQXBalance(wallet)
+
+  ctx.reply(`💰 QX Balance:
+
+${balance} QX`)
 })
 
-// 👛 钱包
-bot.action('wallet', (ctx) => {
-  ctx.answerCbQuery()
+/* =========================
+   📊 资产总览
+========================= */
+bot.command('portfolio', async (ctx) => {
+  const wallet = walletMap[ctx.from.id]
+
+  if (!wallet) {
+    return ctx.reply('❌ 请先绑定钱包')
+  }
+
+  const qx = await getQXBalance(wallet)
+
   ctx.reply(`
-👛 QX Wallet
+📊 Portfolio
 
-Network: TON
-Balance: 100 QX（模拟）
+👛 Wallet:
+${wallet}
+
+💰 QX:
+${qx}
+
+🌐 Network:
+TON
 `)
 })
 
-// 📊 数据
-bot.action('stats', (ctx) => {
-  ctx.answerCbQuery()
-  ctx.reply(`
-📊 QX 项目数据
-
-Status: LIVE
-Chain: TON
-Users: 1024（模拟）
-`)
-})
-
-// 启动
+/* =========================
+   🚀 启动
+========================= */
 bot.launch()
 
-console.log('🚀 QX Bot Running...')
+console.log('🚀 QX Web3 Bot Running...')
