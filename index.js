@@ -7,7 +7,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN)
 const WEBSITE = 'https://q-coin-green.vercel.app/'
 
 bot.start((ctx) => {
-  ```javascript
+  javascript
 bot.command('qx', (ctx) => {
   ctx.reply(`
 🚀 Q Coin (QX)
