@@ -7,32 +7,10 @@ const bot = new Telegraf(process.env.BOT_TOKEN)
 
 const WEBSITE = 'https://q-coin-green.vercel.app/'
 
+/**
+ * START
+ */
 bot.start((ctx) => {
-  javascript
-bot.command('qx', (ctx) => {
-  ctx.reply(`
-🚀 Q Coin (QX)
-
-AI + Web3 + 极速支付生态
-
-💎 Token: QX
-🌐 Network: TON Blockchain
-📦 Supply: 560,000 QX
-🔢 Decimals: 9
-
-📜 Contract:
-EQC-0juuPuAL3wt7jeXXnRQ9Fk_1Lge75bc12TcgImRTOkAE
-
-🌍 Website:
-https://q-coin-green.vercel.app/
-
-💰 Buy QX:
-https://app.ston.fi/
-
-⚡ Status:
-LIVE
-`)
-})
   ctx.reply(
     `🚀 Welcome to Q Coin (QX)
 
@@ -55,6 +33,37 @@ AI + Web3 + 极速支付生态系统
   )
 })
 
+/**
+ * QX INFO COMMAND
+ */
+bot.command('qx', (ctx) => {
+  ctx.reply(`
+🚀 Q Coin (QX)
+
+AI + Web3 + 极速支付生态
+
+💎 Token: QX
+🌐 Network: TON Blockchain
+📦 Supply: 560,000 QX
+🔢 Decimals: 9
+
+📜 Contract:
+EQC-0juuPuPuAL3wt7jeXXnRQ9Fk_1Lge75bc12TcgImRTOkAE
+
+🌍 Website:
+${WEBSITE}
+
+💰 Buy QX:
+https://app.ston.fi/
+
+⚡ Status:
+LIVE
+`)
+})
+
+/**
+ * CALLBACKS
+ */
 bot.action('wallet', async (ctx) => {
   await ctx.answerCbQuery()
 
@@ -65,7 +74,7 @@ TON Network
 Token: QX
 
 Contract:
-EQC-0juuPuAL3wt7jeXXnRQ9Fk_1Lge75bc12TcgImRTOkAE
+EQC-0juuPuPuAL3wt7jeXXnRQ9Fk_1Lge75bc12TcgImRTOkAE
 `)
 })
 
@@ -100,6 +109,9 @@ bot.action('ai', async (ctx) => {
 `)
 })
 
+/**
+ * BUY COMMAND
+ */
 bot.command('buy', (ctx) => {
   ctx.reply(
     '💰 Buy QX',
@@ -109,6 +121,9 @@ bot.command('buy', (ctx) => {
   )
 })
 
+/**
+ * WEBSITE COMMAND
+ */
 bot.command('website', (ctx) => {
   ctx.reply(WEBSITE)
 })
