@@ -1,26 +1,36 @@
 const axios = require('axios')
 
-/**
- * 🚀 TON Jetton 100%稳定查询版本
- * 适配：QX / 任意 Jetton
- */
+const QX_MASTER = 'EQC-0juuPuAL3wt7jeXXnRQ9Fk_1Lge75bc12TcgImRTOkAE'
 
+function normalize(addr) {
+  return (addr || '')
+    .replace(/-/g, '+')
+    .replace(/_/g, '/')
+    .toLowerCase()
+}
+
+/**
+ * 🚀 100% TON Jetton QX 查询（生产级稳定版）
+ */
 async function getQXBalance(wallet) {
   try {
-    if (!wallet) return 0
-
-    const url = `https://tonapi.io/v2/accounts/${wallet}/jettons`
-
-    const res = await axios.get(url)
+    const res = await axios.get(
+      `https://tonapi.io/v2/accounts/${wallet}/jettons`
+    )
 
     const balances = res.data?.balances || []
 
-    if (!Array.isArray(balances)) return 0
-
-    // 🔥 核心：只用 symbol 判断（最稳定）
     const qx = balances.find(j => {
+      const addr = normalize(j.jetton?.address)
+      const master = normalize(QX_MASTER)
+
       const symbol = (j.jetton?.symbol || '').toUpperCase()
-      return symbol === 'QX'
+
+      return (
+        addr === master ||
+        symbol === 'QX' ||
+        j.jetton?.name === 'Q Coin'
+      )
     })
 
     if (!qx) return 0
@@ -31,7 +41,7 @@ async function getQXBalance(wallet) {
     return raw / Math.pow(10, decimals)
 
   } catch (err) {
-    console.log('TON ERROR:', err?.message)
+    console.log('TON ERROR:', err.message)
     return 0
   }
 }
